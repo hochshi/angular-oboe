@@ -24,11 +24,6 @@ angular.module('ngOboe', [])
                                 .fail(function (error) {
                                     defer.reject(error);
                                 })
-                                // for every node containing the specified pattern or if not specified any node
-                                .node(params.pattern || '.', function (node) {
-                                    defer.notify(node);
-                                    return oboe.drop;
-                                })
                                 .done(function () {
                                     if (typeof params.done === 'function') {
                                         params.done();
@@ -36,6 +31,21 @@ angular.module('ngOboe', [])
                                     // make sure oboe cleans up memory
                                     return oboe.drop;
                                 });
+                        if (params.pattern) {
+                            // for every node containing the specified pattern or if not specified any node
+                            stream.node(params.pattern || '.', function (node) {
+                                    defer.notify(node);
+                                    return oboe.drop;
+                                });
+                        }
+                        if (params.patterns) {
+                            angular.forEach(params.patterns, function(pattern) {
+                                stream.on(pattern, function(node) {
+                                    defer.notify(node, pattern);
+                                    return oboe.drop;
+                                });
+                            });
+                        }
                         return defer.promise;
                     }
                 };
