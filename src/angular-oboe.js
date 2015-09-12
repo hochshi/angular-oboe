@@ -41,7 +41,7 @@ angular.module('ngOboe', [])
                         if (params.patterns) {
                             angular.forEach(params.patterns, function(pattern) {
                                 stream.on(pattern, function(node) {
-                                    defer.notify(node, pattern);
+                                    defer.notify({node: node, pattern: pattern});
                                     return oboe.drop;
                                 });
                             });
