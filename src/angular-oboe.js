@@ -39,9 +39,9 @@ angular.module('ngOboe', [])
                                 });
                         }
                         if (params.patterns) {
-                            angular.forEach(params.patterns, function(pattern) {
+                            angular.forEach(params.patterns, function(callback, pattern) {
                                 stream.on(pattern, function(node) {
-                                    defer.notify({node: node, pattern: pattern});
+                                    callback(node);
                                     return oboe.drop;
                                 });
                             });
